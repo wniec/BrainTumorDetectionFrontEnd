@@ -77,6 +77,35 @@ async function setFetchingImg(patient_id) {
     slider.onchange = (event) => fetchImages(patient_id, event.target.value)
     image.appendChild(slider)
     image.appendChild(document.createElement('br'))
+
+    const upButton = document.createElement('button');
+    upButton.appendChild(document.createTextNode("+"));
+    upButton.type = 'button'
+    upButton.onclick = () => {
+        let newVal = parseInt(slider.value, 10) + 1
+        if (newVal > 154) {
+            newVal = 154
+        }
+        slider.value = (newVal).toString();
+        fetchImages(patient_id, newVal)
+    }
+
+
+    const downButton = document.createElement('button');
+    downButton.appendChild(document.createTextNode("-"));
+    downButton.type = 'button'
+    downButton.onclick = () => {
+        let newVal = parseInt(slider.value, 10) - 1
+        if (newVal < 0) {
+            newVal = 0
+        }
+        slider.value = (newVal).toString();
+        fetchImages(patient_id, newVal)
+    }
+    image.appendChild(downButton);
+    image.appendChild(upButton);
+    image.appendChild(document.createElement('br'))
+
     image.appendChild(button);
 
 
