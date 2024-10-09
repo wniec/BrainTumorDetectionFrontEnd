@@ -66,3 +66,20 @@ button:focus-visible {
     background-color: #f9f9f9;
   }
 }
+
+.image-container {
+  display: flex; /* Flexbox for horizontal alignment */
+  justify-content: space-between; /* Evenly distribute the images */
+  align-items: center; /* Align images vertically in the center if needed */
+  width: 90%;
+  gap: 20px; /* Space between images */
+  padding: 10px; /* Optional padding around the container */
+}
+
+.image-container img {
+  /* width: 400px; */
+  height: auto;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  object-fit: cover;
+}

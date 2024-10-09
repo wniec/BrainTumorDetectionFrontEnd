@@ -124,16 +124,51 @@ function PatientsList({ goToPatient }) {
   );
 }
 
+function SliderComponent() {
+  const [value, setValue] = useState(80);
+  return (
+    <div>
+      <h2>Slider Value: {value}</h2>
+      {/* Slider input */}
+      <input
+        defaultValue="80"
+        class="slider"
+        type="range"
+        min="0"
+        max="154"
+        // onChange={handleSliderChange} // Updates value on movement
+        style={{ width: "300px" }}
+      />
+    </div>
+  );
+}
+
 function PatientScans({ patient, goBack }) {
   console.log(patient);
   console.log(patient.id);
+
+  const [slice, setSlice] = useState(80);
+
   return (
     <>
       <div className="scanMenu">
         <button onClick={goBack}>Go back</button>
         {patient.id}
       </div>
-      <div className="scanMenu"></div>
+      <div className="image-container">
+        <img
+          src={`http://127.0.0.1:8000/images/${patient.id}/${slice}/t1`}
+        ></img>
+        <img
+          src={`http://127.0.0.1:8000/images/${patient.id}/${slice}/t2`}
+        ></img>
+        <img
+          src={`http://127.0.0.1:8000/images/${patient.id}/${slice}/profile`}
+        ></img>
+      </div>
+      <div className="slider-container">
+        <SliderComponent />
+      </div>
     </>
   );
 }
