@@ -3,6 +3,7 @@
   margin: 0 auto;
   padding: 2rem;
   text-align: center;
+  background: #919191;
 }
 
 .logo {
@@ -39,4 +40,34 @@
 
 .read-the-docs {
   color: #888;
+}
+
+.menu {
+  width: 100vw;
+  display: flex; /* Enable Flexbox */
+  flex-direction: column;
+  justify-content: center; /* Horizontally center items */
+  align-items: center; /* Vertically center items */
+}
+
+.menu .image-container {
+  width: 90%;
+  height: auto;
+  display: flex; /* Arrange images side by side */
+  justify-content: center; /* Horizontally center images */
+  gap: 10px; /* Add space between images */
+}
+.image-container img {
+  width: 100%; /* Image takes full width of the container */
+  max-width: 33%; /* Limit each image to 33% of container width (3 images) */
+  height: auto; /* Keep aspect ratio */
+  object-fit: cover; /* Ensure the images fill the available space without distortion */
+  border-radius: 5px; /* Optional rounded corners */
+  margin: 0 10px; /* Add spacing between images */
+}
+
+ol {
+  list-style-type: none;
+  padding-left: 0;
+  margin-left: 0;
 }
