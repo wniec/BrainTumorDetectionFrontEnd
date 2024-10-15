@@ -8,6 +8,7 @@ function PatientsList({ goToPatient }) {
     return (
       <li key={patient.id}>
         <button onClick={() => goToPatient({ patient })}>{patient.name}</button>
+          <h2>danger: {Math.round((patient.danger + Number.EPSILON) * 100) / 100}</h2>
       </li>
     );
   });

@@ -4,22 +4,12 @@
   font-weight: 400;
 
   color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
   background-color: #656565;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-}
-
-a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
-}
-a:hover {
-  color: #535bf2;
 }
 
 body {
@@ -34,21 +24,41 @@ h1 {
   font-size: 3.2em;
   line-height: 1.1;
 }
+h2 {
+  min-width: 150px;
+  display: inline-block;
+  border-radius: 8px;
+  border: 1px solid transparent;
+  padding: 10px; /* Optional padding around the container */
+  font-size: 1em;
+  font-weight: 500;
+  font-family: inherit;
+  background-color: #f9f9f9;
+  transition: border-color 0.25s;
+}
+
+.scanMenu {
+  padding: 10px; /* Optional padding around the container */
+}
+
+li {
+  padding: 10px; /* Optional padding around the container */
+}
 
 button {
   border-radius: 8px;
   border: 1px solid transparent;
-  padding: 0.6em 1.2em;
+  padding: 10px; /* Optional padding around the container */
   font-size: 1em;
   font-weight: 500;
   font-family: inherit;
   background-color: #1a1a1a;
   cursor: pointer;
   transition: border-color 0.25s;
+  margin-right: 10px;
 }
 button:hover {
-  border-color: #646cff;
-  background-color: #2e3175;
+  filter: drop-shadow(0 0 2em #000000aa);
 }
 button:focus,
 button:focus-visible {
@@ -58,7 +68,7 @@ button:focus-visible {
 @media (prefers-color-scheme: light) {
   :root {
     color: #213547;
-    background-color: #ffffff;
+    background-color: #999980;
   }
   a:hover {
     color: #747bff;
@@ -74,7 +84,7 @@ button:focus-visible {
   align-items: center; /* Align images vertically in the center if needed */
   width: 90%;
   gap: 20px; /* Space between images */
-  padding: 10px; /* Optional padding around the container */
+
 }
 
 .image-container img {
