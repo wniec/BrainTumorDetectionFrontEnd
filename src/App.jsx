@@ -4,7 +4,7 @@ import "./App.css";
 
 function PatientsList({ goToPatient }) {
   const [patients, setPatients] = useState([]);
-
+  const ip = '34.118.83.75';
   const listOfPatients = patients.map((patient) => {
     return (
       <li key={patient.id}>
@@ -14,7 +14,7 @@ function PatientsList({ goToPatient }) {
   });
 
   async function fetchPatients() {
-    const response = await fetch("http://127.0.0.1:8000/patients");
+    const response = await fetch(`http://${ip}:8000/patients`);
     const data = await response.json();
     setPatients(data);
   }
@@ -59,19 +59,19 @@ function PatientScans({ patient, goBack }) {
 
   return (
     <>
-      {patient.id}
+      {patient.name}
       <div className="scanMenu">
         <button onClick={goBack}>Go back</button>
       </div>
       <div className="image-container">
         <img
-          src={`http://127.0.0.1:8000/images/${patient.id}/${slice}/t1`}
+          src={`http://${ip}:8000/images/${patient.id}/${slice}/t1`}
         ></img>
         <img
-          src={`http://127.0.0.1:8000/images/${patient.id}/${slice}/t2`}
+          src={`http://${ip}:8000/images/${patient.id}/${slice}/t2`}
         ></img>
         <img
-          src={`http://127.0.0.1:8000/images/${patient.id}/${slice}/profile`}
+          src={`http://${ip}:8000/images/${patient.id}/${slice}/profile`}
         ></img>
       </div>
       <div className="slider-container">
