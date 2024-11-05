@@ -39,11 +39,13 @@ img:hover {
   display: flex; /* Arrange images side by side */
   object-fit: cover; /* Ensure the images fill the available space without distortion */
 }
+
 .image-container img {
   width: 100%; /* Image takes full width of the container */
   max-width: 33%; /* Limit each image to 33% of container width (3 images) */
   height: auto; /* Keep aspect ratio */
-
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  object-fit: cover;
   border-radius: 5px; /* Optional rounded corners */
 }
 
@@ -51,4 +53,23 @@ ol {
   list-style-type: none;
   padding-left: 0;
   margin-left: 0;
+}
+.image-container {
+  display: flex; /* Flexbox for horizontal alignment */
+  justify-content: space-between; /* Evenly distribute the images */
+  align-items: center; /* Align images vertically in the center if needed */
+  gap: 20px; /* Space between images */
+
+}
+.ImageBox .scan-image {
+  max-width: 100%;
+  width: 100%;
+  position: absolute;
+}
+.ImageBox{
+  min-width: 240px;
+  min-height: 240px;
+  display: flex;
+  position: relative;
+  justify-content: space-between;
 }

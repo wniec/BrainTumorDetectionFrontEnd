@@ -38,6 +38,42 @@ function PatientsList({goToPatient}) {
     );
 }
 
+function ScanImage({blob}) {
+    const [url, setUrl] = useState(null);
+
+    useEffect(() => {
+        if (blob) {
+            const objectUrl = URL.createObjectURL(new Blob([blob], {type: 'image/png'}));
+            setUrl(objectUrl);
+
+            // Clean up the object URL when the component unmounts
+            return () => URL.revokeObjectURL(objectUrl);
+        }
+    }, [blob]);
+
+    return url ? <img src={url} className={"scan-image"}/> : null;
+}
+
+function ImageBox({blob, prediction, combine}) {
+    if (combine)
+        return (<div className="ImageBox">
+
+            <ScanImage blob={blob}></ScanImage>
+            <ScanImage blob={prediction}></ScanImage>
+        </div>)
+    else
+        return (<div className="ImageBox">
+            <ScanImage blob={blob}></ScanImage>
+        </div>)
+}
+function ScanBox({blob, prediction, combine, description}) {
+        return (<div className="ScanBox">
+            <ImageBox blob={blob} prediction={prediction} combine={combine}></ImageBox>
+            <h3>{description}</h3>
+        </div>)
+}
+
+
 function SliderComponent({setSlice}) {
     function handleChange(event) {
         console.log(event.target.value);
@@ -52,7 +88,8 @@ function SliderComponent({setSlice}) {
                 type="range"
                 min="0"
                 max="154"
-                onMouseUp={handleChange} // onChange when Images are cached
+                onChange={handleChange}
+                // onMouseUp={handleChange} // onChange when Images are cached
                 style={{width: "300px"}}
             />
         </div>
@@ -61,44 +98,55 @@ function SliderComponent({setSlice}) {
 
 function PatientScans({patient, goBack, imageData}) {
     const [slice, setSlice] = useState(80);
-    console.log(imageData.has(`patient/${slice}/t1.png`))
+
+    const blobPrediction = imageData.get(`patient/${slice}/prediction.png`);
     const blobT1 = imageData.get(`patient/${slice}/t1.png`);
-    const PNGBlobT1 = new Blob([blobT1], {type: "image/png"});
-    const urlT1 = URL.createObjectURL(PNGBlobT1);
-
     const blobT2 = imageData.get(`patient/${slice}/t2.png`);
-    const PNGBlobT2 = new Blob([blobT2], {type: "image/png"});
-    const urlT2 = URL.createObjectURL(PNGBlobT2);
-
     const blobProfile = imageData.get(`patient/${slice}/profile.png`);
-    console.log(blobProfile)
-    const PNGBlobProfile = new Blob([blobProfile], {type: "image/png"});
-    const urlProfile = URL.createObjectURL(PNGBlobProfile);
-    //console.log(blob)
-    //const url = URL.createObjectURL(blob);
-    return (
-        <>
-            {patient.name}
-            <div className="scanMenu">
-                <button onClick={goBack}>Go back</button>
-            </div>
-            <div className="image-container">
-                <img
-                    src={urlT1}//{`http://${ip}:8000/images/${patient.id}/${slice}/t1`}
-                ></img>
-                <img
-                    src={urlT2}//{`http://${ip}:8000/images/${patient.id}/${slice}/t2`}
-                ></img>
-                <img
-                    src={urlProfile}//{`http://${ip}:8000/images/${patient.id}/${slice}/profile`}
-                ></img>
-            </div>
-            <div className="slider-container">
-                <SliderComponent setSlice={setSlice}/>
-            </div>
-        </>
-    );
+    const flair_exists = imageData.has(`patient/${slice}/flair.png`)
+
+    if (flair_exists) {
+        const blobFLAIR = imageData.get(`patient/${slice}/flair.png`);
+
+        return (
+            <>
+                {patient.name}
+                <div className="scanMenu">
+                    <button onClick={goBack}>Go back</button>
+                </div>
+                <div className="image-container">
+                    <ScanBox blob={blobT1} prediction={blobPrediction} combine={false} description={"T1"}></ScanBox>
+                    <ScanBox blob={blobT2} prediction={blobPrediction} combine={true} description={"T2"}></ScanBox>
+                    <ScanBox blob={blobFLAIR} prediction={blobPrediction} combine={true} description={"FLAIR"}></ScanBox>
+                    <ScanImage blob={blobProfile}></ScanImage>
+                </div>
+                <div className="slider-container">
+                    <SliderComponent setSlice={setSlice}/>
+                </div>
+            </>
+        );
+    } else {
+        return (
+            <>
+                {patient.name}
+                <div className="scanMenu">
+                    <button onClick={goBack}>Go back</button>
+                </div>
+                <div className="image-container">
+                    <ScanBox blob={blobT1} prediction={blobPrediction} combine={false} description={"T1"}></ScanBox>
+                    <ScanBox blob={blobT2} prediction={blobPrediction} combine={false} description={"T2"}></ScanBox>
+                    <ScanImage blob={blobProfile}></ScanImage>
+                </div>
+                <div className="slider-container">
+                    <SliderComponent setSlice={setSlice}/>
+                </div>
+            </>
+        );
+    }
 }
+
+//const url = URL.createObjectURL(blob);
+
 
 export default function App() {
     async function changeModeToScan({patient}) {
@@ -106,14 +154,13 @@ export default function App() {
         const buffer = await response.arrayBuffer();
         const zip = await JSZip.loadAsync(buffer);
         const imageDataMap = new Map();
-        zip.forEach(async (relativePath, file) => {
-            console.log(relativePath)
-            //files.push(relativePath); // Save each file name in the array
-            const blob = await file.async('blob').then();
-            console.log(blob)
-            //console.log(blob)
-            void imageDataMap.set(relativePath, blob);
-        });
+        await Promise.all(
+            Object.keys(zip.files).map(async (relativePath) => {
+                const file = zip.files[relativePath];
+                const blob = await file.async('blob');
+                imageDataMap.set(relativePath, blob);
+            })
+        );
 
         // Create an object URL for the Blob to use as an image source
         //var gunzip = new Zlib.Gunzip(compressed);
