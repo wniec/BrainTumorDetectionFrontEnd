@@ -66,11 +66,12 @@ function ImageBox({blob, prediction, combine}) {
             <ScanImage blob={blob}></ScanImage>
         </div>)
 }
+
 function ScanBox({blob, prediction, combine, description}) {
-        return (<div className="ScanBox">
-            <ImageBox blob={blob} prediction={prediction} combine={combine}></ImageBox>
-            <h3>{description}</h3>
-        </div>)
+    return (<div className="ScanBox">
+        <ImageBox blob={blob} prediction={prediction} combine={combine}></ImageBox>
+        <h3>{description}</h3>
+    </div>)
 }
 
 
@@ -98,6 +99,7 @@ function SliderComponent({setSlice}) {
 
 function PatientScans({patient, goBack, imageData}) {
     const [slice, setSlice] = useState(80);
+    const [preds, setPreds] = useState(true);
 
     const blobPrediction = imageData.get(`patient/${slice}/prediction.png`);
     const blobT1 = imageData.get(`patient/${slice}/t1.png`);
@@ -113,11 +115,14 @@ function PatientScans({patient, goBack, imageData}) {
                 {patient.name}
                 <div className="scanMenu">
                     <button onClick={goBack}>Go back</button>
+                    <button
+                        onClick={() => setPreds(!preds)}>{preds ? "Turn Off model Predictions" : "Turn On model Predictions"}</button>
                 </div>
                 <div className="image-container">
-                    <ScanBox blob={blobT1} prediction={blobPrediction} combine={false} description={"T1"}></ScanBox>
-                    <ScanBox blob={blobT2} prediction={blobPrediction} combine={true} description={"T2"}></ScanBox>
-                    <ScanBox blob={blobFLAIR} prediction={blobPrediction} combine={true} description={"FLAIR"}></ScanBox>
+                    <ScanBox blob={blobT1} prediction={blobPrediction} combine={preds} description={"T1"}></ScanBox>
+                    <ScanBox blob={blobT2} prediction={blobPrediction} combine={preds} description={"T2"}></ScanBox>
+                    <ScanBox blob={blobFLAIR} prediction={blobPrediction} combine={preds}
+                             description={"FLAIR"}></ScanBox>
                     <ScanImage blob={blobProfile}></ScanImage>
                 </div>
                 <div className="slider-container">
@@ -131,10 +136,12 @@ function PatientScans({patient, goBack, imageData}) {
                 {patient.name}
                 <div className="scanMenu">
                     <button onClick={goBack}>Go back</button>
+                    <button
+                        onClick={() => setPreds(!preds)}>{preds ? "Turn Off model Predictions" : "Turn On model Predictions"}</button>
                 </div>
                 <div className="image-container">
-                    <ScanBox blob={blobT1} prediction={blobPrediction} combine={false} description={"T1"}></ScanBox>
-                    <ScanBox blob={blobT2} prediction={blobPrediction} combine={false} description={"T2"}></ScanBox>
+                    <ScanBox blob={blobT1} prediction={blobPrediction} combine={preds} description={"T1"}></ScanBox>
+                    <ScanBox blob={blobT2} prediction={blobPrediction} combine={preds} description={"T2"}></ScanBox>
                     <ScanImage blob={blobProfile}></ScanImage>
                 </div>
                 <div className="slider-container">
