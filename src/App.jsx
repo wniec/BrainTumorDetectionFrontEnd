@@ -11,7 +11,7 @@ function PatientsList({goToPatient}) {
         return (
             <li key={patient.id}>
                 <button onClick={() => goToPatient({patient})}>{patient.name}</button>
-                <h2>danger: {Math.round((patient.danger + Number.EPSILON) * 100) / 100}</h2>
+                <h2>danger: {Math.round((patient.danger + Number.EPSILON)) / 100}</h2>
             </li>
         );
     });
@@ -152,11 +152,21 @@ function PatientScans({patient, goBack, imageData}) {
     }
 }
 
+function LoadingScreen() {
+    return (
+        <div className="loading-screen">
+            <h1>Loading, please wait...</h1>
+            <img src={"./loading.gif"}></img>
+        </div>);
+}
+
 //const url = URL.createObjectURL(blob);
 
 
 export default function App() {
     async function changeModeToScan({patient}) {
+
+        setLoading(true); // Show loading screen
         const response = await fetch(`http://${ip}:8000/images/${patient.id}`);
         const buffer = await response.arrayBuffer();
         const zip = await JSZip.loadAsync(buffer);
@@ -177,6 +187,7 @@ export default function App() {
         setCurrentPatient(patient);
         await setImageData(imageDataMap);
         setMode(Modes.SCAN);
+        setLoading(false);
     }
 
     function changeModeToList() {
@@ -186,7 +197,10 @@ export default function App() {
     const [mode, setMode] = useState(Modes.LIST);
     const [currentPatient, setCurrentPatient] = useState(null);
     const [imageData, setImageData] = useState(null);
-
+    const [loading, setLoading] = useState(false); // Loading state
+    if (loading) {
+        return <LoadingScreen/>; // Display loading screen
+    }
     if (mode === Modes.LIST) {
         return (
             <>
