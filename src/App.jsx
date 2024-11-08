@@ -3,7 +3,7 @@ import {Modes} from "./types";
 import "./App.css";
 import JSZip from "jszip";
 
-const ip = '10.204.141.208';
+var ip = '34.118.83.75';
 
 function PatientsList({goToPatient}) {
     const [patients, setPatients] = useState([]);
