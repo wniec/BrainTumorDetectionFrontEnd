@@ -153,10 +153,14 @@ function PatientScans({patient, goBack, imageData}) {
 }
 
 function LoadingScreen() {
+    const mystyle = {
+        width: 100,
+        height: 100,
+    };
     return (
         <div className="loading-screen">
             <h1>Loading, please wait...</h1>
-            <img src={"./loading.gif"}></img>
+            <img src={"./loading.gif"}  style={mystyle}></img>
         </div>);
 }
 

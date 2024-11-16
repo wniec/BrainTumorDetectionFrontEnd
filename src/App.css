@@ -54,7 +54,7 @@ ol {
   display: flex; /* Flexbox for horizontal alignment */
   justify-content: space-between; /* Evenly distribute the images */
   align-items: center; /* Align images vertically in the center if needed */
-  gap: 20px; /* Space between images */
+  gap: 10px; /* Space between images */
 
 }
 .ImageBox .scan-image {
@@ -63,8 +63,8 @@ ol {
   position: absolute;
 }
 .ImageBox{
-  min-width: 240px;
-  min-height: 240px;
+  min-width: 300px;
+  min-height: 300px;
   display: flex;
   position: relative;
   justify-content: space-between;
