@@ -3,8 +3,8 @@ import { Modes } from "./types";
 import "./App.css";
 import JSZip from "jszip";
 
-var ip = "34.118.83.75";
-// var ip = "127.0.0.1";
+// var ip = "34.118.83.75";
+var ip = "127.0.0.1";
 
 const ColorChangingButton = ({ patientId }) => {
   const [color, setColor] = useState("#191919");
@@ -23,8 +23,12 @@ const ColorChangingButton = ({ patientId }) => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ patiend_id: patientId }),
+        body: JSON.stringify({
+          patiend_id: patientId,
+          erase: erased,
+        }),
       });
+      console.log(JSON.stringify({ patiend_id: patientId }));
 
       if (!response.ok) {
         throw new Error("Request failed!");
@@ -58,17 +62,47 @@ const ColorChangingButton = ({ patientId }) => {
   );
 };
 
+// function PatientsList({ goToPatient }) {
+//   const [patients, setPatients] = useState([]);
+//   const [listOfPatients, setListOfPatients] = useState([]);
+
+//   setListOfPatients(() =>
+//     patients.map((patient) => {
+//       return (
+//         <li key={patient.id}>
+//           <button onClick={() => goToPatient({ patient })}>
+//             {patient.name}
+//           </button>
+//           <h2>danger: {Math.round(patient.danger + Number.EPSILON) / 100}</h2>
+//           <ColorChangingButton patientId={patient.id}></ColorChangingButton>
+//         </li>
+//       );
+//     })
+//   );
+
+//   async function fetchPatients() {
+//     const response = await fetch(`http://${ip}:8000/patients`);
+//     const data = await response.json();
+//     setPatients(data);
+//   }
+
+//   useEffect(() => {
+//     fetchPatients();
+//   }, []);
+
+//   return (
+//     <>
+//       <div className="listMenu">
+//         <button onClick={fetchPatients}>Reload patients</button>
+//       </div>
+//       <div>
+//         <ol>{listOfPatients}</ol>
+//       </div>
+//     </>
+//   );
+// }
 function PatientsList({ goToPatient }) {
   const [patients, setPatients] = useState([]);
-  const listOfPatients = patients.map((patient) => {
-    return (
-      <li key={patient.id}>
-        <button onClick={() => goToPatient({ patient })}>{patient.name}</button>
-        <h2>danger: {Math.round(patient.danger + Number.EPSILON) / 100}</h2>
-        <ColorChangingButton></ColorChangingButton>
-      </li>
-    );
-  });
 
   async function fetchPatients() {
     const response = await fetch(`http://${ip}:8000/patients`);
@@ -78,16 +112,25 @@ function PatientsList({ goToPatient }) {
 
   useEffect(() => {
     fetchPatients();
-  }, []);
+  }, []); // Wywołaj fetchPatients tylko raz, po zamontowaniu komponentu
 
   return (
     <>
       <div className="listMenu">
         <button onClick={fetchPatients}>Reload patients</button>
       </div>
-      <div>
-        <ol>{listOfPatients}</ol>
-      </div>
+      <ul>
+        {patients.map((patient) => (
+          <li key={patient.id}>
+            <button onClick={() => goToPatient(patient)}>{patient.name}</button>
+            <h2>
+              danger:{" "}
+              {Math.round((patient.danger + Number.EPSILON) * 100) / 100}
+            </h2>
+            <ColorChangingButton patientId={patient.id} />
+          </li>
+        ))}
+      </ul>
     </>
   );
 }

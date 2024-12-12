@@ -36,6 +36,7 @@ h2 {
   background-color: #191919;
   color: #f9f9f9;
   transition: border-color 0.25s;
+  margin-right: 10px;
 }
 
 .scanMenu {
@@ -44,6 +45,8 @@ h2 {
 
 li {
   padding: 10px; /* Optional padding around the container */
+  gap: 10px;
+  /* display: flex; */
 }
 
 button {
