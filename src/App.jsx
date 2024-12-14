@@ -35,7 +35,7 @@ const ColorChangingButton = ({ patientId }) => {
       }
 
       console.log(
-        `sent request for ${patientId} to ${erased ? "not" : ""} erase`
+        `sent request for ${patientId} to ${erased ? "" : "not"} erase`
       );
     } catch (error) {
       console.error("Error:", error);
