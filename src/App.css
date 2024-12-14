@@ -50,19 +50,25 @@ ol {
   padding-left: 0;
   margin-left: 0;
 }
+
+ul {
+  list-style-type: none;
+  padding-left: 0;
+  margin-left: 0;
+}
+
 .image-container {
   display: flex; /* Flexbox for horizontal alignment */
   justify-content: space-between; /* Evenly distribute the images */
   align-items: center; /* Align images vertically in the center if needed */
   gap: 10px; /* Space between images */
-
 }
 .ImageBox .scan-image {
   max-width: 100%;
   width: 100%;
   position: absolute;
 }
-.ImageBox{
+.ImageBox {
   min-width: 300px;
   min-height: 300px;
   display: flex;
