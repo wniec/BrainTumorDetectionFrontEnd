@@ -57,7 +57,7 @@ const ColorChangingButton = ({ patientId }) => {
       }}
       disabled={isLoading}
     >
-      {isLoading ? "..." : "Usuń"}
+      {isLoading ? "..." : "Delete"}
     </button>
   );
 };
@@ -83,11 +83,10 @@ function PatientsList({ goToPatient }) {
       <ul>
         {patients.map((patient) => (
           <li key={patient.id}>
-            <button onClick={() => goToPatient(patient)}>{patient.name}</button>
-            <h2>
-              danger:{" "}
-              {Math.round((patient.danger + Number.EPSILON) * 100) / 100}
-            </h2>
+            <button onClick={() => goToPatient({ patient })}>
+              {patient.name}
+            </button>
+            <h2>danger: {(patient.danger + Number.EPSILON) / 100}</h2>
             <ColorChangingButton patientId={patient.id} />
           </li>
         ))}
@@ -264,6 +263,7 @@ function LoadingScreen() {
 export default function App() {
   async function changeModeToScan({ patient }) {
     setLoading(true); // Show loading screen
+    console.log(patient);
     const response = await fetch(`http://${ip}:8000/images/${patient.id}`);
     const buffer = await response.arrayBuffer();
     const zip = await JSZip.loadAsync(buffer);
