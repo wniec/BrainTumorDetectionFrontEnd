@@ -3,8 +3,7 @@ import { Modes } from "./types";
 import "./App.css";
 import JSZip from "jszip";
 
-var ip = "34.118.83.75";
-// var ip = "127.0.0.1";
+var ip = "127.0.0.1";
 
 const ColorChangingButton = ({ patientId }) => {
   const [color, setColor] = useState("#191919");
